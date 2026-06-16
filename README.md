@@ -17,6 +17,14 @@ registrants a simple way to celebrate and share their participation on LinkedIn.
 LinkedIn's public share URL can't pre-fill post text or attach an image, so the
 flow is intentionally "copy caption + download graphic + open composer."
 
+## Tracking
+
+Uses the same mechanism as the other GG widgets (Partner Globe, FAQ, pricing): a
+single GET to the shared Google Apps Script web app on the first interaction per
+browser session, with IP-based geo from ipapi.co. The script appends a row to the
+`2026Registration` tab (timestamp, button, ip, country, state, city). This
+widget's button label is **`PostRegShareWidget`**.
+
 ## Assets
 
 - Shareable graphic (PNG): hosted on Cvent's CDN (see `IMAGE_URL` in `script.js`).

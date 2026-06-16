@@ -112,6 +112,37 @@ function openShareModal() {
   });
 }
 
+// ─── Interaction tracking ──────────────────────────────────────────────────────
+// Matches the GG Partner Globe / FAQ / pricing widgets: a single GET to the shared
+// Apps Script web app, fired once per browser session, with IP-based geo from
+// ipapi.co. The Apps Script appends a row to the 2026Registration tab
+// (timestamp, button, ip, country, state, city).
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxq8HofSFbnFxS7HeKQKZVhyuPIqpu_7NAWhvOzAXBzyxfatdeJu8hfGCRCahOINshA/exec";
+const TRACK_KEY  = "ggPostRegShareTracked";
+
+async function trackInteraction() {
+  if (sessionStorage.getItem(TRACK_KEY)) return;
+  sessionStorage.setItem(TRACK_KEY, "1");
+
+  const params = new URLSearchParams({
+    sheet:  "2026Registration",
+    button: "PostRegShareWidget"
+  });
+
+  try {
+    const ctrl  = new AbortController();
+    const timer = setTimeout(() => ctrl.abort(), 3000);
+    const geo   = await fetch("https://ipapi.co/json/", { signal: ctrl.signal }).then(r => r.json());
+    clearTimeout(timer);
+    if (geo.ip)           params.set("ip",      geo.ip);
+    if (geo.country_name) params.set("country", geo.country_name);
+    if (geo.region)       params.set("state",   geo.region);
+    if (geo.city)         params.set("city",    geo.city);
+  } catch (_) {}
+
+  fetch(SCRIPT_URL + "?" + params.toString(), { mode: "no-cors" }).catch(() => {});
+}
+
 // ─── Cvent iframe auto-resize ──────────────────────────────────────────────────
 // Tell the parent Cvent page how tall the widget is so the iframe can grow.
 function sendHeight() {
@@ -126,6 +157,10 @@ function requestParentMetrics() {
 document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("shareBtn").addEventListener("click", e => { e.preventDefault(); openShareModal(); });
   document.getElementById("downloadBtn").addEventListener("click", e => { e.preventDefault(); downloadImage(); });
+
+  // Log engagement once per session on the first real interaction (any button,
+  // including the Canva link).
+  document.addEventListener("pointerdown", trackInteraction, { once: true });
 
   sendHeight();
   const img = document.getElementById("shareImage");
