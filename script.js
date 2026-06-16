@@ -55,9 +55,9 @@ function openShareModal() {
         Share on LinkedIn
       </div>
       <ol class="li-modal-steps">
-        <li>Download the graphic (we'll grab it for you).</li>
-        <li>Copy the caption below.</li>
-        <li>Open LinkedIn, paste the caption, and attach the graphic.</li>
+        <li>Copy the caption below (we'll also download the graphic for you).</li>
+        <li>Open LinkedIn &mdash; the event link comes pre-attached.</li>
+        <li>Paste the caption, and swap in the graphic if you'd like.</li>
       </ol>
       <textarea id="li-post-text" spellcheck="false"></textarea>
       <div class="li-modal-actions">
@@ -107,7 +107,11 @@ function openShareModal() {
   openBtn.addEventListener("click", () => {
     doCopy();
     downloadImage();
-    const liUrl = "https://www.linkedin.com/feed/?shareActive=true";
+    // Open LinkedIn's share dialog with the event URL pre-attached, so the post
+    // already has a link preview card. (LinkedIn can't pre-fill the caption or
+    // attach the image, so the registrant pastes the copied caption — and can
+    // swap the link card for the downloaded graphic if they prefer.)
+    const liUrl = "https://www.linkedin.com/sharing/share-offsite/?url=" + encodeURIComponent(EVENT_URL);
     setTimeout(() => window.open(liUrl, "_blank", "noopener,noreferrer"), 400);
   });
 }
