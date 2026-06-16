@@ -55,18 +55,20 @@ function openShareModal() {
         Share on LinkedIn
       </div>
       <ol class="li-modal-steps">
-        <li>Copy the caption below (we'll also download the graphic for you).</li>
-        <li>Open LinkedIn &mdash; the event link comes pre-attached.</li>
-        <li>Paste the caption, and swap in the graphic if you'd like.</li>
+        <li>Copy the caption below (you are welcome to make edits first).</li>
+        <li>Open LinkedIn&mdash;nothing will post yet.</li>
+        <li>Paste the caption, and add in the graphic if you'd like.</li>
       </ol>
       <textarea id="li-post-text" spellcheck="false"></textarea>
       <div class="li-modal-actions">
         <button class="li-modal-close" id="li-close-btn">Cancel</button>
+        <div class="li-modal-btngroup">
         <button class="li-modal-copy" id="li-copy-btn">Copy caption</button>
         <button class="li-modal-open" id="li-open-btn">
           ${SVG_LINKEDIN}
-          Download &amp; open LinkedIn
+          Download image &amp; open LinkedIn
         </button>
+        </div>
       </div>
     </div>`;
   document.body.appendChild(overlay);

@@ -180,11 +180,16 @@ html, body {
   display: flex; gap: 8px; justify-content: flex-end; align-items: center;
   margin-top: 16px; flex-wrap: wrap;
 }
+.li-modal-btngroup {
+  display: flex; gap: 8px; align-items: center; flex-wrap: nowrap;
+}
 .li-modal-close {
   margin-right: auto; padding: 10px 12px; border-radius: 8px;
   font-family: "Montserrat", sans-serif; font-size: .82rem; font-weight: 600;
   cursor: pointer; border: none; background: none; color: #8a93a5;
+  white-space: nowrap;
 }
+.li-modal-copy, .li-modal-open { white-space: nowrap; }
 .li-modal-close:hover { color: #444; }
 .li-modal-copy {
   padding: 10px 18px; border-radius: 9px; font-family: "Montserrat", sans-serif;
