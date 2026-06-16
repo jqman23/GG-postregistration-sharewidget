@@ -151,8 +151,11 @@ async function trackInteraction() {
 
 // ─── Cvent iframe auto-resize ──────────────────────────────────────────────────
 // Tell the parent Cvent page how tall the widget is so the iframe can grow.
+// Measure the full document (not the widget's bounding box, which excludes its
+// outer margins) so the bottom never gets clipped.
 function sendHeight() {
-  const h = document.getElementById("shareWidget").getBoundingClientRect().height + 20;
+  const doc = document.documentElement;
+  const h = Math.max(doc.scrollHeight, doc.offsetHeight, document.body.scrollHeight) + 8;
   try { window.parent.postMessage({ ggWidgetHeight: Math.ceil(h) }, "*"); } catch (e) {}
 }
 function requestParentMetrics() {
@@ -169,7 +172,13 @@ document.addEventListener("DOMContentLoaded", () => {
   document.addEventListener("pointerdown", trackInteraction, { once: true });
 
   sendHeight();
+
+  // Re-measure as late-loading content settles: image, web font, and any
+  // layout change (e.g. buttons wrapping at narrow widths).
   const img = document.getElementById("shareImage");
   if (img && !img.complete) img.addEventListener("load", sendHeight);
+  window.addEventListener("load", sendHeight);
   window.addEventListener("resize", sendHeight);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(sendHeight);
+  if (window.ResizeObserver) new ResizeObserver(sendHeight).observe(document.body);
 });
