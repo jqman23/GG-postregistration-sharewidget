@@ -151,11 +151,17 @@ async function trackInteraction() {
 
 // ─── Cvent iframe auto-resize ──────────────────────────────────────────────────
 // Tell the parent Cvent page how tall the widget is so the iframe can grow.
-// Measure the full document (not the widget's bounding box, which excludes its
-// outer margins) so the bottom never gets clipped.
+// Measure the widget element's own rendered height plus its outer margins. We do
+// NOT use document/viewport-based heights (e.g. documentElement.scrollHeight),
+// because those are bounded below by the iframe height and would feed back into
+// the parent's resize, growing the iframe without end.
 function sendHeight() {
-  const doc = document.documentElement;
-  const h = Math.max(doc.scrollHeight, doc.offsetHeight, document.body.scrollHeight) + 8;
+  const el = document.getElementById("shareWidget");
+  if (!el) return;
+  const cs = getComputedStyle(el);
+  const h = el.getBoundingClientRect().height
+          + parseFloat(cs.marginTop)
+          + parseFloat(cs.marginBottom);
   try { window.parent.postMessage({ ggWidgetHeight: Math.ceil(h) }, "*"); } catch (e) {}
 }
 function requestParentMetrics() {
@@ -180,5 +186,10 @@ document.addEventListener("DOMContentLoaded", () => {
   window.addEventListener("load", sendHeight);
   window.addEventListener("resize", sendHeight);
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(sendHeight);
-  if (window.ResizeObserver) new ResizeObserver(sendHeight).observe(document.body);
+  // Observe the widget element (content height), never document.body/viewport,
+  // so a parent resize can't feed back and grow the iframe indefinitely.
+  if (window.ResizeObserver) {
+    const el = document.getElementById("shareWidget");
+    if (el) new ResizeObserver(sendHeight).observe(el);
+  }
 });
