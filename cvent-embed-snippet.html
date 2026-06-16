@@ -1,0 +1,23 @@
+<!--
+  Paste this into a Cvent "Custom HTML" / "Website Builder HTML" block on the
+  post-registration confirmation page. It embeds the share widget and auto-resizes
+  the iframe to fit the content.
+-->
+<iframe
+  id="gg-share-widget"
+  src="https://gg-postregistration-sharewidget.vercel.app/"
+  width="100%"
+  height="520"
+  style="border:none;display:block;overflow:hidden;"
+  scrolling="no"
+></iframe>
+<script>
+  var ggShareFrame = document.getElementById("gg-share-widget");
+
+  // Grow the iframe to fit the widget's content.
+  window.addEventListener("message", function (e) {
+    if (e.data && e.data.ggWidgetHeight) {
+      ggShareFrame.height = e.data.ggWidgetHeight;
+    }
+  });
+</script>
