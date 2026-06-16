@@ -45,17 +45,20 @@ html, body {
 }
 
 .badge {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   background: var(--sage);
   color: var(--navy);
   font-weight: 700;
   font-size: .72rem;
   letter-spacing: .04em;
   text-transform: uppercase;
-  padding: 6px 14px;
+  padding: 6px 14px 6px 12px;
   border-radius: 999px;
   margin-bottom: 14px;
 }
+.badge svg { flex-shrink: 0; }
 
 .card__title {
   margin: 0 0 8px;
@@ -74,6 +77,7 @@ html, body {
   line-height: 1.55;
 }
 .card__sub strong { color: var(--navy); font-weight: 700; }
+.card__sub em { color: var(--navy); font-weight: 600; font-style: italic; }
 
 .card__body {
   padding: 22px 28px 30px;
