@@ -212,3 +212,75 @@ html, body {
   .card__title { font-size: 1.28rem; }
   .btn { width: 100%; justify-content: center; }
 }
+
+
+/* Mobile polish for LinkedIn share modal */
+@media (max-width: 520px) {
+  .li-modal-overlay {
+    align-items: flex-start;
+    justify-content: center;
+    padding: 10px 10px calc(14px + env(safe-area-inset-bottom));
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .li-modal {
+    width: 100%;
+    max-width: 500px;
+    max-height: none;
+    margin: 0 auto;
+    padding: 18px;
+    border-radius: 14px;
+  }
+
+  .li-modal-header {
+    font-size: .98rem;
+    line-height: 1.25;
+  }
+
+  .li-modal-steps li {
+    font-size: .78rem;
+    line-height: 1.4;
+  }
+
+  .li-modal textarea {
+    height: 150px;
+    max-height: 32vh;
+    font-size: .78rem;
+  }
+
+  .li-modal-actions {
+    flex-direction: column-reverse;
+    align-items: stretch;
+    gap: 10px;
+  }
+
+  .li-modal-btngroup {
+    width: 100%;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+
+  .li-modal-close,
+  .li-modal-copy,
+  .li-modal-open {
+    width: 100%;
+    min-height: 44px;
+    justify-content: center;
+    text-align: center;
+    margin-right: 0;
+    white-space: normal;
+  }
+}
+
+@media (max-width: 380px) {
+  .li-modal {
+    padding: 16px;
+  }
+
+  .li-modal textarea {
+    height: 130px;
+  }
+}
+
